@@ -19,7 +19,7 @@ g_hist_headers = ['ID', 'MTS', 'AMOUNT', 'PRICE']
 # current value
 g_realtime_headers = ['SYMBOL', 'BID', 'BID_SIZE', 'ASK', 'ASK_SIZE', 'DAILY_CHANGE', 'DAILY_CHANGE_RELATIVE', 'LAST_PRICE', 'VOLUME', 'HIGH', 'LOW']
 
-g_dst_md = '/root/test.md'
+g_dst_md = './result.md'
 
 def get_json(url):
     try:

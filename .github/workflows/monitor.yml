@@ -1,0 +1,32 @@
+name: 'GitHub Actions Crypto Report'
+
+on:
+  push:
+  schedule:
+    - cron: '* * * * *'
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout codes'
+        uses: actions/checkout@v2
+      - name: 'Get Date'
+        run: echo "REPORT_DATE=$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')" >> $GITHUB_ENV
+      - name: 'Install packages'
+        run: pip3 install pytablewriter requests
+      - name: 'Get Crypto info'
+        run: python3 ./monitor.py
+      - name: 'Send mail'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Crypto Report (${{env.REPORT_DATE}})
+          body: file://result.md
+          to: 1024.better@gmail.com
+          from: FlowPJ
+          convert_markdown: true
+          content_type: text/html
