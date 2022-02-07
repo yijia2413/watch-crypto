@@ -29,4 +29,3 @@ jobs:
           to: 1024.better@gmail.com
           from: FlowPJ
           convert_markdown: true
-          content_type: text/html
