@@ -6,6 +6,9 @@ import datetime
 import markdown
 import pytablewriter as wt
 
+# only show 30 lines of history
+g_hist_limit = 30
+
 #  https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist
 g_base_hist_url = 'https://api-pub.bitfinex.com/v2/trades'
 
@@ -13,8 +16,6 @@ g_base_hist_url = 'https://api-pub.bitfinex.com/v2/trades'
 g_base_realtime_url = 'https://api-pub.bitfinex.com/v2/tickers?symbols='
 
 # monitor btc and eth, for more: https://api-pub.bitfinex.com/v2/conf/pub:list:currency
-# g_monitor_coins = ['tBTCUSD', 'tETHUSD']
-
 g_monitor_coins = {'tBTCUSD': 'BTC', 'tETHUSD': 'ETH'}
 
 # history data
@@ -41,13 +42,13 @@ def get_realtime_price():
     return get_json(url)
 
 def get_hist_price(coin):
-    url = '{}/{}/hist'.format(g_base_hist_url, coin)
+    url = '{}/{}/hist?limit={}'.format(g_base_hist_url, coin, g_hist_limit)
     return get_json(url)
 
 def json2md():
 
     result = '# Basic\n* Time:{}\n'.format(str(datetime.datetime.now()))
-    result += '* URL: https://finance.yahoo.com/cryptocurrencies/\n'
+    result += '* URL: [yahoo](https://finance.yahoo.com/cryptocurrencies/), [coinbase](https://www.coinbase.com/price)\n'
 
     realtime_list = get_realtime_price()
 
@@ -69,7 +70,7 @@ def json2md():
     except Exception as e:
         logging.error(e)
 
-    result += '\n====\n'
+    result += '\n\n'
 
     for coin in g_monitor_coins:
         hist_list = get_hist_price(coin)
