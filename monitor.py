@@ -69,13 +69,15 @@ def json2md():
     except Exception as e:
         logging.error(e)
 
+    result += '\n====\n'
+
     for coin in g_monitor_coins:
         hist_list = get_hist_price(coin)
         if (not hist_list) or (not isinstance(hist_list, list)):
             continue
 
         writer = wt.MarkdownTableWriter(
-            table_name=coin,
+            table_name=g_monitor_coins.get(coin),
             headers=g_hist_headers,
             value_matrix=hist_list,
         )
