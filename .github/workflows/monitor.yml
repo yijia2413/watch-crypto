@@ -3,7 +3,7 @@ name: 'GitHub Actions Crypto Report'
 on:
   push:
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 4 * * *'
 
 jobs:
   bot:
