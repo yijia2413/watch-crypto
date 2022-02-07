@@ -14,7 +14,7 @@ jobs:
       - name: 'Get Date'
         run: echo "REPORT_DATE=$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')" >> $GITHUB_ENV
       - name: 'Install packages'
-        run: pip3 install pytablewriter requests
+        run: pip3 install pytablewriter requests markdown
       - name: 'Get Crypto info'
         run: python3 ./monitor.py
       - name: 'Send mail'
@@ -25,7 +25,6 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Crypto Report (${{env.REPORT_DATE}})
-          body: file://result.md
+          html_body: file://result.html
           to: 1024.better@gmail.com
-          from: FlowPJ
-          convert_markdown: true
+          from: foobar

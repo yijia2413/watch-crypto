@@ -3,6 +3,7 @@
 import requests
 import logging
 import datetime
+import markdown
 import pytablewriter as wt
 
 #  https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist
@@ -19,7 +20,7 @@ g_hist_headers = ['ID', 'MTS', 'AMOUNT', 'PRICE']
 # current value
 g_realtime_headers = ['SYMBOL', 'BID', 'BID_SIZE', 'ASK', 'ASK_SIZE', 'DAILY_CHANGE', 'DAILY_CHANGE_RELATIVE', 'LAST_PRICE', 'VOLUME', 'HIGH', 'LOW']
 
-g_dst_md = './result.md'
+g_dst_html = './result.html'
 
 def get_json(url):
     try:
@@ -76,11 +77,14 @@ def json2md():
 
     return result
 
+def md2html():
+    md = json2md()
+    html = markdown.markdown(md)
+    with open(g_dst_html, 'w') as f:
+        f.write(html)
 
 def main():
-    with open(g_dst_md, 'w') as f:
-        f.write(json2md())
-
+    md2html()
     logging.info("get crypto price success")
 
 if __name__ == '__main__':
