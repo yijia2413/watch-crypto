@@ -7,16 +7,23 @@ import markdown
 import pytablewriter as wt
 
 # only show 30 lines of history
-g_hist_limit = 30
+g_hist_limit = 10
 
 #  https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist
 g_base_hist_url = 'https://api-pub.bitfinex.com/v2/trades'
 
+# https://api-pub.bitfinex.com/v2/tickers?symbols=ALL
 # https://api-pub.bitfinex.com/v2/tickers?symbols=tBTCUSD,tETHUSD
 g_base_realtime_url = 'https://api-pub.bitfinex.com/v2/tickers?symbols='
 
 # monitor btc and eth, for more: https://api-pub.bitfinex.com/v2/conf/pub:list:currency
-g_monitor_coins = {'tBTCUSD': 'BTC', 'tETHUSD': 'ETH'}
+g_monitor_coins = {
+    'tBTCUSD': 'BTC', 
+    'tETHUSD': 'ETH', 
+    'DOGE:USD': 'DogeCoin',
+    'tUNIUSD': 'Uniswap',
+    'SHIB:USD': 'SHIB',
+}
 
 # history data
 g_hist_headers = ['ID', 'MTS', 'AMOUNT', 'PRICE']
