@@ -13,16 +13,16 @@ g_hist_limit = 10
 g_base_hist_url = 'https://api-pub.bitfinex.com/v2/trades'
 
 # https://api-pub.bitfinex.com/v2/tickers?symbols=ALL
-# https://api-pub.bitfinex.com/v2/tickers?symbols=tBTCUSD,tETHUSD
+# https://api-pub.bitfinex.com/v2/tickers?symbols=tBTCUSD,tETHUSD,tDOGE:USD,tSHIB:USD,tUNIUSD
 g_base_realtime_url = 'https://api-pub.bitfinex.com/v2/tickers?symbols='
 
 # monitor btc and eth, for more: https://api-pub.bitfinex.com/v2/conf/pub:list:currency
 g_monitor_coins = {
     'tBTCUSD': 'BTC', 
     'tETHUSD': 'ETH', 
-    'DOGE:USD': 'DogeCoin',
+    'tDOGE:USD': 'DogeCoin',
     'tUNIUSD': 'Uniswap',
-    'SHIB:USD': 'SHIB',
+    'tSHIB:USD': 'SHIB',
 }
 
 # history data
