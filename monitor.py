@@ -1,114 +1,39 @@
 #coding: utf8
 
-import requests
 import logging
-import datetime
-import markdown
-import pytablewriter as wt
-
-# only show 30 lines of history
-g_hist_limit = 10
-
-#  https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist
-g_base_hist_url = 'https://api-pub.bitfinex.com/v2/trades'
-
-# https://api-pub.bitfinex.com/v2/tickers?symbols=ALL
-# https://api-pub.bitfinex.com/v2/tickers?symbols=tBTCUSD,tETHUSD,tDOGE:USD,tSHIB:USD,tUNIUSD
-g_base_realtime_url = 'https://api-pub.bitfinex.com/v2/tickers?symbols='
-
-# monitor btc and eth, for more: https://api-pub.bitfinex.com/v2/conf/pub:list:currency
-g_monitor_coins = {
-    'tBTCUSD': 'BTC', 
-    'tETHUSD': 'ETH', 
-    'tDOGE:USD': 'DogeCoin',
-    'tUNIUSD': 'Uniswap',
-    'tSHIB:USD': 'SHIB',
-}
-
-# history data
-g_hist_headers = ['ID', 'MTS', 'AMOUNT', 'PRICE']
-# current value
-g_realtime_headers = ['SYMBOL', 'BID', 'BID_SIZE', 'ASK', 'ASK_SIZE', 'DAILY_CHANGE', 'DAILY_CHANGE_RELATIVE', 'LAST_PRICE', 'VOLUME', 'HIGH', 'LOW']
+from stock import stock
+from crypto import crypto
 
 g_dst_html = './result.html'
 
-def get_json(url):
-    try:
-        ret = requests.get(url)
-    except Exception as e:
-        logging.error(e)
-        return None
-    if ret.status_code != 200:
-        logging.error('status:%d, u:%s', ret.status_code, url)
-        return None
+def generate_html():
 
-    return ret.json()
+    l = []
 
-def get_realtime_price():
-    url = g_base_realtime_url + ','.join(g_monitor_coins.keys())
-    return get_json(url)
+    # 
+    crypto_app = crypto.Crypto()
+    crypto_html = crypto_app.get_html()
 
-def get_hist_price(coin):
-    url = '{}/{}/hist?limit={}'.format(g_base_hist_url, coin, g_hist_limit)
-    return get_json(url)
+    # 
+    stock_app = stock.Stock()
+    stock_html = stock_app.get_html()
 
-def json2md():
+    l.append(crypto_html, stock_html)
 
-    result = '# Basic\n* Time:{}\n'.format(str(datetime.datetime.now()))
-    result += '* URL: [yahoo](https://finance.yahoo.com/cryptocurrencies/), [coinbase](https://www.coinbase.com/price)\n'
-
-    realtime_list = get_realtime_price()
-
-    # list btc and eth price
-    if realtime_list and (len(g_monitor_coins) == len(realtime_list)):
-        for index, value in enumerate(realtime_list):
-            # restapi value 0 return name
-            if len(value) != len(g_realtime_headers):
-                continue 
-            result += '* {}:{}$\n'.format(g_monitor_coins.get(value[0]), value[7])
-    
-    try:
-        writer = wt.MarkdownTableWriter(
-            table_name=','.join(g_monitor_coins.values()),
-            headers=g_realtime_headers,
-            value_matrix=realtime_list,
-        )
-        result += writer.dumps()
-    except Exception as e:
-        logging.error(e)
-
-    result += '\n\n'
-
-    for coin in g_monitor_coins:
-        hist_list = get_hist_price(coin)
-        if (not hist_list) or (not isinstance(hist_list, list)):
-            continue
-
-        writer = wt.MarkdownTableWriter(
-            table_name=g_monitor_coins.get(coin),
-            headers=g_hist_headers,
-            value_matrix=hist_list,
-        )
-        result += (writer.dumps() + '\n')
-
-    return result
-
-def md2html():
-    md = json2md()
-    html = markdown.markdown(md, extensions=['markdown.extensions.tables'])
+def dump_html(hl:list):
     with open(g_dst_html, 'w') as f:
-        f.write(html)
+        f.write('\n'.join(hl))
 
 def main():
-    md2html()
-    logging.info("get crypto price success")
+    l = generate_html()
+    dump_html(l)
 
 if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
-            logging.FileHandler("crypto.log"),
+            logging.FileHandler("monitor.log"),
             logging.StreamHandler()
         ]
     )
