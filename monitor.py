@@ -18,7 +18,7 @@ def generate_html():
     stock_app = stock.Stock()
     stock_html = stock_app.get_html()
 
-    l.append(crypto_html, stock_html)
+    l.extend(crypto_html, stock_html)
 
 def dump_html(hl:list):
     with open(g_dst_html, 'w') as f:
