@@ -26,5 +26,5 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Crypto Report (${{env.REPORT_DATE}})
           html_body: file://result.html
-          to: 1024.better@gmail.com,wz2010_only@163.com
+          to: 1024.better@gmail.com
           from: foobar
