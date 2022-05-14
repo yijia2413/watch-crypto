@@ -5,15 +5,41 @@ import pandas as pd
 
 class Stock():
     def __init__(self):
-        self.companies = ['MSFT', 'aapl', 'goog']
+        self.companies = {
+            'msft': '微软',
+            'aapl': 'Apple',
+            'goog': 'Google',
+            'tsla': '特斯拉',
+            'BA': '波音',
+            'PDD': '拼多多',
+            '0700.HK': '腾讯',
+            'NOW': 'ServiceNow',
+            'DDOG': 'Datadog',
+            'zm': 'ZOOM',
+            'baba': 'Alibaba',
+            'gtlb': 'Gitlab',
+            'jd': '京东',
+            'BIDU': 'Baidu',
+            'DT': 'Dynatrace',
+            'li': '理想汽车',
+            'tsp': '图森未来',
+            'twtr': 'Twitter',
+            'CAR': '安飞士',
+            'fb': 'Facebook',
+            '1119.HK': '创梦天地',
+            '300454.SZ': '深信服',
+            '0268.HK': '金蝶',
+            '1801.HK': '小米',
+            '0772.HK': '阅文集团',
+        }
 
     def get_data(self):
         tickers = yf.Tickers(' '.join(self.companies))
 
         dfs = []
-        for c in self.companies:
+        for c, name in self.companies.items():
             df = tickers.tickers.get(c.upper()).history(period="1d")
-            df.insert(0, 'company', c.upper())    
+            df.insert(0, 'company', name)    
             dfs.append(df)
             
         result = pd.concat(dfs).fillna(0)
