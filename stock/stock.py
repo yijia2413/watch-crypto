@@ -1,14 +1,15 @@
 #coding: utf8
 
+from cmath import log
 import yfinance as yf
 import pandas as pd
 
 class Stock():
     def __init__(self):
         self.companies = {
-            'msft': '微软',
-            'aapl': 'Apple',
-            'goog': 'Google',
+            '1119.HK': '创梦天地',
+            '300454.SZ': '深信服',
+            '0268.HK': '金蝶',
             'tsla': '特斯拉',
             'BA': '波音',
             'PDD': '拼多多',
@@ -26,11 +27,11 @@ class Stock():
             'twtr': 'Twitter',
             'CAR': '安飞士',
             'fb': 'Facebook',
-            '1119.HK': '创梦天地',
-            '300454.SZ': '深信服',
-            '0268.HK': '金蝶',
             '1801.HK': '小米',
             '0772.HK': '阅文集团',
+            'msft': '微软',
+            'aapl': 'Apple',
+            'goog': 'Google',
         }
 
     def get_data(self):
@@ -49,4 +50,8 @@ class Stock():
         # return html str
         df = self.get_data()
         result = df.to_html()
+        try:
+            result = result.drop(['Volume', 'Dividends', 'Stock Splits'], axis=1)
+        except:
+            pass
         return '<H1>Stock:</H1><br></br>\n' + result
