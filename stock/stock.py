@@ -1,8 +1,8 @@
 #coding: utf8
 
-from cmath import log
 import yfinance as yf
 import pandas as pd
+import logging
 
 class Stock():
     def __init__(self):
@@ -47,11 +47,12 @@ class Stock():
         return result
     
     def get_html(self):
-        # return html str
+        prefix = '<H1>Stock:</H1><br></br>\n'
         df = self.get_data()
-        result = df.to_html()
         try:
-            result = result.drop(['Volume', 'Dividends', 'Stock Splits'], axis=1)
-        except:
-            pass
-        return '<H1>Stock:</H1><br></br>\n' + result
+            df = df.drop(['Volume', 'Dividends', 'Stock Splits'], axis=1)
+        except Exception as e:
+            logging.error(e)
+
+        result = df.to_html()
+        return  prefix + result
