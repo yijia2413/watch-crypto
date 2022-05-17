@@ -47,7 +47,7 @@ class Stock():
         return result
     
     def get_html(self):
-        prefix = '<H1>Stock:</H1><br></br>\n'
+        prefix = '<H1>Stock:</H1><br></br>'
         df = self.get_data()
         try:
             df = df.drop(['Volume', 'Dividends', 'Stock Splits'], axis=1)

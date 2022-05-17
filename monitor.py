@@ -3,6 +3,7 @@
 import logging
 from stock import stock
 from crypto import crypto
+from hackernews import hackernews
 
 g_dst_html = './result.html'
 
@@ -17,6 +18,11 @@ def generate_html():
     stock_app = stock.Stock()
     stock_html = stock_app.get_html()
     l.append(stock_html)
+
+    # 
+    hacker_app = hackernews.HackerNews()
+    hacker_html = hacker_app.get_html()
+    l.append(hacker_html)
 
     return l
 
