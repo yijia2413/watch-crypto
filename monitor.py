@@ -15,14 +15,14 @@ def generate_html():
     l.append(crypto_html)
 
     # 
-    stock_app = stock.Stock()
-    stock_html = stock_app.get_html()
-    l.append(stock_html)
-
-    # 
     hacker_app = hackernews.HackerNews()
     hacker_html = hacker_app.get_html()
     l.append(hacker_html)
+
+    # 
+    stock_app = stock.Stock()
+    stock_html = stock_app.get_html()
+    l.append(stock_html)
 
     return l
 
